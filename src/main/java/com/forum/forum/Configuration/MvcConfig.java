@@ -1,4 +1,4 @@
-package com.forum.forum.Controllers;
+package com.forum.forum.Configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

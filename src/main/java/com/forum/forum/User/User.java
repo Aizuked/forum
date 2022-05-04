@@ -1,27 +1,28 @@
 package com.forum.forum.User;
+import com.forum.forum.Configuration.App.UserRole;
+
 import javax.persistence.*;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "appUsers")
 public class User {
     @Id
     @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
+            name = "appUser_sequence",
+            sequenceName = "appUser_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            generator = "appUser_sequence"
     )
     private Long id;
     private String username;
     private String password;
     @Lob
     private String related_news;
-    private String role;
-    private boolean enabled;
+    private Long[] userRoleId;
 
     public Long getId() {
         return id;
@@ -53,28 +54,21 @@ public class User {
         this.related_news = related_news;
     }
 
-    public String getRole() {
-        return role;
+    public Long[] getUserRoleId() {
+        return userRoleId;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setUserRoleId(Long[] userRoleId) {
+        this.userRoleId = userRoleId;
     }
-
-    public boolean isEnabled() { return enabled; }
-
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", related_news='" + related_news + '\'' +
-                ", role='" + role + '\'' +
-                ", enabled=" + enabled +
+                ", userRoleId=" + userRoleId +
                 '}';
     }
-
 }

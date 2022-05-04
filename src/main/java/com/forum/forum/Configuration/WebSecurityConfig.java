@@ -29,30 +29,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/user/registration").permitAll()
+                .antMatchers("/login", "/registration").permitAll()
                 .antMatchers("/", "/home").access("hasRole('USER')")
-                .and().formLogin().loginPage("/login")
+                .and().formLogin().loginProcessingUrl("/j_spring_security_check").loginPage("/login")
                 .and()
                 .logout().logoutSuccessUrl("/login");
+
         http.authorizeRequests().and()
                 .rememberMe().tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(1 * 24 * 60 * 60);
+                .tokenValiditySeconds(24 * 60 * 60);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

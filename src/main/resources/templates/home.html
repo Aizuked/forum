@@ -4,8 +4,7 @@
     <title>Home</title>
 </head>
 <body>
-<h1>Welcome!</h1>
-
 <p>Greetings!</p>
+<a th:if="${#request.userPrincipal != null}" th:href="@{/logout}" th:text="#{label.button.logout}"></a>
 </body>
 </html>

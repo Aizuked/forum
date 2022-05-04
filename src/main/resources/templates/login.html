@@ -4,20 +4,21 @@
     <title>Please log in</title>
 </head>
 <body>
-<form th:action="@{/login}" action="/" th:object="${user}" method="POST" enctype="utf8">
+<form th:action="@{/processAuthentication}" th:object="${user}" method="POST" enctype="utf8">
     <div>
-        <label th:text="#{label.user.username}">Username</label>
-        <input th:field="*{username}"/>
-        <p th:each="error: ${#fields.errors('username')}"
-           th:text="${error}">Validation error</p>
+        <label th:text="#{label.user.username}"></label>
+        <input type="text" th:field="*{username}" name="username"/>
     </div>
     <div>
-        <label th:text="#{label.user.password}">Password</label>
-        <input type="password" th:field="*{password}"/>
-        <p th:each="error : ${#fields.errors('password')}"
-           th:text="${error}">Validation error</p>
+        <label th:text="#{label.user.password}"></label>
+        <input type="password" th:field="*{password}" name="password" required minlength="6"/>
     </div>
-    <button type="submit" th:text="#{label.form.submit}">submit</button>
+    <div>
+        <label th:text="#{label.user.login.remember_me}"></label>
+        <input type="checkbox" name="remember-me">
+    </div>
+    <button type="submit" th:text="#{label.form.submit}"></button>
 </form>
+<a th:href="@{/registration}" th:text="#{label.href.registerInstead}"></a>
 </body>
 </html>

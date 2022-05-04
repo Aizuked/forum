@@ -1,21 +1,22 @@
-package com.forum.forum.App;
+package com.forum.forum.Configuration.App;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "userRole")
-public class UserRole {
+@Table(name = "appRoles")
+public class AppRole {
     @Id
     @SequenceGenerator(
-            name = "user_role_sequence",
-            sequenceName = "user_role_sequence",
+            name = "appRoles_sequence",
+            sequenceName = "appRoles_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "role_sequence"
+            generator = "appRoles_sequence"
     )
     private Long id;
+
     private String roleName;
 
     public Long getId() {
