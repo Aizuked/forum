@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.WebRequest;
+
+import java.security.Principal;
 
 @Controller
 public class IndexController {
@@ -20,9 +21,8 @@ public class IndexController {
 
 
     @RequestMapping(value = {"/", "/home"})
-    public String showLoginForm(WebRequest request, Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+    public String showGreetings(Model model, Principal principal) {
+        model.addAttribute("principal", principal.getName());
         return "home";
     }
 }

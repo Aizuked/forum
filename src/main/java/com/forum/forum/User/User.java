@@ -1,7 +1,7 @@
 package com.forum.forum.User;
-import com.forum.forum.Configuration.App.UserRole;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 
 @Entity
@@ -20,9 +20,9 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    @Lob
-    private String related_news;
-    private Long[] userRoleId;
+    private ArrayList<Long> related_news;
+    private ArrayList<Long> userRoleIds;
+    private boolean enabled = true;
 
     public Long getId() {
         return id;
@@ -46,29 +46,29 @@ public class User {
         this.password = password;
     }
 
-    public String getRelated_news() {
-        return related_news;
+    public ArrayList<Long> getRelated_news() { return related_news; }
+
+    public void setRelated_news(ArrayList<Long> related_news) { this.related_news = related_news; }
+
+    public ArrayList<Long> getUserRoleIds() { return userRoleIds; }
+
+    public void setUserRoleIds(ArrayList<Long> userRoleId) {
+        this.userRoleIds = userRoleId;
     }
 
-    public void setRelated_news(String related_news) {
-        this.related_news = related_news;
-    }
+    public boolean isEnabled() { return enabled; }
 
-    public Long[] getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(Long[] userRoleId) {
-        this.userRoleId = userRoleId;
-    }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", related_news='" + related_news + '\'' +
-                ", userRoleId=" + userRoleId +
+                ", userRoleId=" + userRoleIds +
+                ", enabled=" + enabled +
                 '}';
     }
 }

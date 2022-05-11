@@ -1,4 +1,4 @@
-package com.forum.forum.Configuration.App;
+package com.forum.forum.Configuration.App.UserRole;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

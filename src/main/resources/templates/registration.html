@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"><head>
+    <title>Please register</title>
+</head>
 <body>
 <h1 th:text="#{label.registrationForm.title}">form</h1>
 <form th:action="@{/processRegistration}" th:object="${user}" method="POST" enctype="utf8">
@@ -11,6 +13,9 @@
         <label th:text="#{label.user.password}"></label>
         <input type="password" th:field="*{password}" name="password" required minlength="6"/>
     </div>
+    <input type="hidden"
+           name="${_csrf.parameterName}"
+           value="${_csrf.token}"/>
     <button type="submit" th:text="#{label.form.submit}"></button>
 </form>
 

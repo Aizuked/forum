@@ -1,7 +1,7 @@
 package com.forum.forum;
 
-import com.forum.forum.Configuration.App.AppRole;
-import com.forum.forum.Configuration.App.AppRoleRepository;
+import com.forum.forum.Configuration.App.AppRole.AppRole;
+import com.forum.forum.Configuration.App.AppRole.AppRoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

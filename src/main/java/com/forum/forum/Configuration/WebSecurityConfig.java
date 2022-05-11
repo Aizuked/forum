@@ -1,6 +1,5 @@
 package com.forum.forum.Configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -23,33 +22,35 @@ import java.util.Map;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/login", "/registration").permitAll()
-                .antMatchers("/", "/home").access("hasRole('USER')")
-                .and().formLogin().loginProcessingUrl("/j_spring_security_check").loginPage("/login")
+                .antMatchers("/", "/home/*").hasAuthority("USER")
                 .and()
-                .logout().logoutSuccessUrl("/login");
-
-        http.authorizeRequests().and()
-                .rememberMe().tokenRepository(this.persistentTokenRepository())
+                .formLogin().loginProcessingUrl("/processAuthentication").loginPage("/login")
+                .and()
+                .logout().logoutUrl("/process_logout")
+                .invalidateHttpSession(true).deleteCookies("remember-me", "JSESSIONID")
+                .clearAuthentication(true).logoutSuccessUrl("/login")
+                .and()
+                .rememberMe().rememberMeCookieName("remember-me")
+                .tokenRepository(this.persistentTokenRepository())
                 .tokenValiditySeconds(24 * 60 * 60);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth
+                .authenticationProvider(authProvider());
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
+
         return authProvider;
     }
 
@@ -61,16 +62,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         Map<String, PasswordEncoder> encoders = new HashMap<>();
+
         Pbkdf2PasswordEncoder crypter = new Pbkdf2PasswordEncoder("very_secret_secret");
         crypter.setAlgorithm(Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA512);
+
         encoders.put("pbkdf2", crypter);
         encoders.put("scrypt", new BCryptPasswordEncoder());
+
         return new DelegatingPasswordEncoder("pbkdf2", encoders);
     }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         InMemoryTokenRepositoryImpl memory = new InMemoryTokenRepositoryImpl();
+
         return memory;
     }
 }

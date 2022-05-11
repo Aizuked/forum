@@ -4,7 +4,12 @@
     <title>Home</title>
 </head>
 <body>
-<p>Greetings!</p>
-<a th:if="${#request.userPrincipal != null}" th:href="@{/logout}" th:text="#{label.button.logout}"></a>
+<p>Greetings, <span th:text="${principal}"></span>!</p>
+<form th:action="@{/process_logout}" method="POST" enctype="utf8">
+    <input type="hidden"
+           name="${_csrf.parameterName}"
+           value="${_csrf.token}"/>
+    <input type="submit" th:value="#{label.button.logout}">
+</form>
 </body>
 </html>

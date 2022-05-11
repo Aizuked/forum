@@ -1,4 +1,4 @@
-package com.forum.forum.Configuration.App;
+package com.forum.forum.Configuration.App.AppRole;
 
 import javax.persistence.*;
 
@@ -35,4 +35,11 @@ public class AppRole {
         this.roleName = roleName;
     }
 
+    @Override
+    public String toString() {
+        return "AppRole{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                '}';
+    }
 }

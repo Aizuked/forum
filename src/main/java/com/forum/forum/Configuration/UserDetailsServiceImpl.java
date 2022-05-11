@@ -1,7 +1,7 @@
 package com.forum.forum.Configuration;
 
-import com.forum.forum.Configuration.App.AppExceptions.AppRoleNotFoundException;
-import com.forum.forum.Configuration.App.UserRoleRepository;
+import com.forum.forum.Configuration.App.AppRole.AppRoleService;
+import com.forum.forum.Configuration.App.UserRole.UserRoleService;
 import com.forum.forum.User.User;
 import com.forum.forum.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +19,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private UserRoleRepository userRoleRepository;
+    private UserRoleService userRoleService;
+
+    @Autowired
+    private AppRoleService appRoleService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException, AppRoleNotFoundException {
+            throws UsernameNotFoundException {
 
-        User user = userRepository.getUserByUsername(username).orElseThrow(() ->
+        User user = userRepository.findUserByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(
                         "User was not found!"
                 )
             );
 
-        return new newUserDetails(user, userRoleRepository);
+        return new newUserDetails(user, userRoleService, appRoleService);
     }
 
 }

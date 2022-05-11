@@ -4,6 +4,7 @@
     <title>Please log in</title>
 </head>
 <body>
+<h1 th:text="#{label.authenticationForm.title}">form</h1>
 <form th:action="@{/processAuthentication}" th:object="${user}" method="POST" enctype="utf8">
     <div>
         <label th:text="#{label.user.username}"></label>
@@ -17,6 +18,9 @@
         <label th:text="#{label.user.login.remember_me}"></label>
         <input type="checkbox" name="remember-me">
     </div>
+    <input type="hidden"
+           name="${_csrf.parameterName}"
+           value="${_csrf.token}"/>
     <button type="submit" th:text="#{label.form.submit}"></button>
 </form>
 <a th:href="@{/registration}" th:text="#{label.href.registerInstead}"></a>
