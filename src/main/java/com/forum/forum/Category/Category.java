@@ -1,10 +1,11 @@
 package com.forum.forum.Category;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="categories")
-public class Category {
+public class Category implements Serializable {
     @Id
     @SequenceGenerator(
             name = "category_sequence",

@@ -1,5 +1,7 @@
 package com.forum.forum.Post;
 
+import com.forum.forum.Category.Category;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,25 +11,17 @@ import java.util.List;
 public class Post {
     @Id
     @SequenceGenerator(
-            name = "appUser_sequence",
-            sequenceName = "appUser_sequence",
+            name = "posts_sequence",
+            sequenceName = "posts_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "appUser_sequence"
+            generator = "posts_sequence"
     )
     private Long id;
     private String text;
-    private ArrayList<Long> categoriesIdsList;
-
-    public Post() {
-    }
-
-    public Post(String text, ArrayList<Long> categoriesIdsList) {
-        this.text = text;
-        this.categoriesIdsList = categoriesIdsList;
-    }
+    private ArrayList<Category> categoriesList;
 
     public Long getId() { return id; }
 
@@ -37,16 +31,17 @@ public class Post {
 
     public void setText(String text) { this.text = text; }
 
-    public List<Long> getCategoriesIdsList() { return categoriesIdsList; }
+    public List<Category> getCategoriesList() { return categoriesList; }
 
-    public void setCategoriesIdsList(ArrayList<Long> categoriesIdsList) { this.categoriesIdsList = categoriesIdsList; }
+    public void setCategoriesList(ArrayList<Category> categoriesIdsList) { this.categoriesList = categoriesIdsList; }
+
 
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", categoriesIdsList=" + categoriesIdsList +
+                ", categoriesList=" + categoriesList +
                 '}';
     }
 }

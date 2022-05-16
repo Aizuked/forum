@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -26,6 +27,15 @@ public class CategoryService {
     public void addCategory(Category category) {
         categoryRepository.save(category);
         categoryRepository.flush();
+    }
+
+    @Transactional
+    public Category getCategoryById(Long categoryId) {
+        Category category = Optional.ofNullable(categoryRepository.getById(categoryId))
+                .orElseThrow(() -> new IllegalStateException(
+                        "\nCategory with id=" + categoryId + " was not found!"
+                ));
+        return category;
     }
 
     @Transactional
