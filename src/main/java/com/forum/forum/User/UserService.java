@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -66,6 +67,11 @@ public class UserService {
         );
 
         return !Objects.isNull(user1);
+    }
+
+    @Transactional
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 }

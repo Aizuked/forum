@@ -20,7 +20,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private ArrayList<Long> related_news;
+    private ArrayList<Long> relatedNews;
     private ArrayList<Long> userRoleIds;
     private boolean enabled = true;
 
@@ -46,9 +46,9 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Long> getRelated_news() { return related_news; }
+    public ArrayList<Long> getRelatedNews() { return relatedNews; }
 
-    public void setRelated_news(ArrayList<Long> related_news) { this.related_news = related_news; }
+    public void setRelatedNews(ArrayList<Long> relatedNews) { this.relatedNews = relatedNews; }
 
     public ArrayList<Long> getUserRoleIds() { return userRoleIds; }
 
@@ -66,7 +66,7 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", related_news='" + related_news + '\'' +
+                ", relatedNews='" + relatedNews + '\'' +
                 ", userRoleId=" + userRoleIds +
                 ", enabled=" + enabled +
                 '}';

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>News</title>
+</head>
+<body>
+
+<form th:action="@{/addNewPost}" method="POST" enctype="application/json">
+    <div>
+        <input type="text" th:placeholder="#{label.post.text}" name="text"/>
+        <input type="text" th:placeholder="#{label.post.categories}" name="categories"/>
+    </div>
+    <button type="submit" th:text="#{label.form.submit}"></button>
+</form>
+<span th:if="${not #lists.isEmpty(posts)}">
+    <div th:each="post: ${posts}">
+        <tr th:text="${post.text}"/>
+    </div>
+</span>
+</body>
+</html>
