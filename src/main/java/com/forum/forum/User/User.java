@@ -1,12 +1,15 @@
 package com.forum.forum.User;
 
+import com.forum.forum.Post.Post;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 @Entity
 @Table(name = "appUsers")
-public class User {
+public class User implements Serializable {
     @Id
     @SequenceGenerator(
             name = "appUser_sequence",
@@ -20,7 +23,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private ArrayList<Long> relatedNews;
+    private ArrayList<Post> posts;
     private ArrayList<Long> userRoleIds;
     private boolean enabled = true;
 
@@ -46,9 +49,9 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Long> getRelatedNews() { return relatedNews; }
+    public ArrayList<Post> getPosts() { return posts; }
 
-    public void setRelatedNews(ArrayList<Long> relatedNews) { this.relatedNews = relatedNews; }
+    public void setPosts(ArrayList<Post> posts) { this.posts = posts; }
 
     public ArrayList<Long> getUserRoleIds() { return userRoleIds; }
 
@@ -60,14 +63,15 @@ public class User {
 
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", relatedNews='" + relatedNews + '\'' +
-                ", userRoleId=" + userRoleIds +
+                ", posts=" + posts +
+                ", userRoleIds=" + userRoleIds +
                 ", enabled=" + enabled +
                 '}';
     }

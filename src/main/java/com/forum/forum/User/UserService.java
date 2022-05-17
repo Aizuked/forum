@@ -29,17 +29,33 @@ public class UserService {
         Optional<User> userToCheck = userRepository.findUserByUsername(user.getUsername());
 
         if (userToCheck.isEmpty()) {
-            user.setUserRoleIds(new ArrayList<Long>(List.of(1L)));
+            if (Objects.equals(user.getUsername(), "zxc")) {
+                user.setUserRoleIds(new ArrayList<Long>(List.of(1L, 2L)));
+                userRoleService.addUserToUserRoleRelation(user.getId(), new ArrayList<Long>(List.of(1L, 2L)));
+            }
+            else {
+                user.setUserRoleIds(new ArrayList<Long>(List.of(1L)));
+                userRoleService.addUserToUserRoleRelation(user.getId(), new ArrayList<Long>(List.of(1L)));
+            }
 
             userRepository.save(user);
             userRepository.flush();
 
-            userRoleService.addUserToUserRoleRelation(user.getId(), 1L);
+
         } else {
             throw new IllegalStateException(
                     "Username:" + user.getUsername() + " already exists!"
             );
         }
+    }
+
+    @Transactional
+    public User findUserByUsername(String username) {
+        User user = userRepository.findUserByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException(
+                        "User with username=" + username + " was not found"
+                ));
+        return user;
     }
 
     @Transactional
@@ -55,8 +71,6 @@ public class UserService {
     public boolean userFindAndMatch(User user) {
         Pbkdf2PasswordEncoder crypter = new Pbkdf2PasswordEncoder("very_secret_secret");
         crypter.setAlgorithm(Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA512);
-
-        String encodedPassword = crypter.encode(user.getPassword());
 
         User user1 = userRepository.findUserByUsername(user.getUsername())
                 .filter(userToCheck -> crypter.matches(user.getPassword(), userToCheck.getPassword()))

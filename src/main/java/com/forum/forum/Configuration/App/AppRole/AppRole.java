@@ -1,10 +1,11 @@
 package com.forum.forum.Configuration.App.AppRole;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "appRoles")
-public class AppRole {
+public class AppRole implements Serializable {
     @Id
     @SequenceGenerator(
             name = "appRoles_sequence",

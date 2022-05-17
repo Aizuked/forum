@@ -1,5 +1,6 @@
 package com.forum.forum.Configuration.App.UserRole;
 
+import com.forum.forum.Configuration.App.AppRole.AppRoleRepository;
 import com.forum.forum.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,24 +14,28 @@ public class UserRoleService {
     @Autowired
     private final UserRoleRepository userRoleRepository;
 
-    public UserRoleService(UserRoleRepository userRoleRepository) { this.userRoleRepository = userRoleRepository; }
+    @Autowired
+    private final AppRoleRepository appRoleRepository;
 
-    @Transactional
-    public void addUserToUserRoleRelation(Long user_id, Long appRoleId) {
-        UserRole userRole = new UserRole();
-        userRole.setUser_id(user_id);
-        userRole.setAppRoleId(appRoleId);
-
-        userRoleRepository.save(userRole);
+    public UserRoleService(UserRoleRepository userRoleRepository, AppRoleRepository appRoleRepository) {
+        this.userRoleRepository = userRoleRepository;
+        this.appRoleRepository = appRoleRepository;
     }
 
     @Transactional
-    public ArrayList<Long> getAppRoleIdsList(User user) {
-        return user
-                .getUserRoleIds()
-                .stream()
-                .map(userRoleRepository::getById)
-                .map(UserRole::getAppRoleId)
-                .collect(Collectors.toCollection(ArrayList::new));
+    public void addUserToUserRoleRelation(Long user_id, ArrayList<Long> appRoleIds) {
+        UserRole userRole = new UserRole();
+        userRole.setUser_id(user_id);
+        for (Long approleId : appRoleIds) {
+            userRole.setAppRoleId(approleId);
+            userRoleRepository.save(userRole);
+        }
+
+    }
+
+    @Transactional
+    public ArrayList<Long> getUserRoleIdsList(User user) {
+        return new ArrayList<>(user
+                .getUserRoleIds());
     }
 }

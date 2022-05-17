@@ -30,12 +30,19 @@ public class CategoryService {
     }
 
     @Transactional
+    public Category getCategoryByName(String categoryName) {
+        return Optional.ofNullable(categoryRepository.findByCategoryName(categoryName))
+                .orElseThrow(() -> new IllegalStateException(
+                        "\nCategory with name=" + categoryName + " was not found!"
+                ));
+    }
+
+    @Transactional
     public Category getCategoryById(Long categoryId) {
-        Category category = Optional.ofNullable(categoryRepository.getById(categoryId))
+        return Optional.ofNullable(categoryRepository.getById(categoryId))
                 .orElseThrow(() -> new IllegalStateException(
                         "\nCategory with id=" + categoryId + " was not found!"
                 ));
-        return category;
     }
 
     @Transactional
@@ -48,12 +55,4 @@ public class CategoryService {
         return category.getId();
     }
 
-    @Transactional
-    public List<String> getRelatedCategoriesByPostIds(ArrayList<Long> postIds) {
-        return postIds
-                .stream()
-                .map(categoryRepository::getById)
-                .map(Category::getCategoryName)
-                .toList();
-    }
 }

@@ -3,11 +3,10 @@ package com.forum.forum.Configuration;
 import com.forum.forum.Configuration.App.AppRole.AppRoleService;
 import com.forum.forum.Configuration.App.UserRole.UserRoleService;
 import com.forum.forum.User.User;
-import com.forum.forum.User.UserRepository;
+import com.forum.forum.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private UserRoleService userRoleService;
@@ -26,16 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-
-        User user = userRepository.findUserByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(
-                        "User was not found!"
-                )
-            );
-
-        return new newUserDetails(user, userRoleService, appRoleService);
+    public UserDetails loadUserByUsername(String username) {
+        User user = userService.findUserByUsername(username);
+        return new NewUserDetails(user, userRoleService, appRoleService);
     }
 
 }

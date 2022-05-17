@@ -1,10 +1,11 @@
 package com.forum.forum.Configuration.App.UserRole;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "userRoles")
-public class UserRole {
+public class UserRole implements Serializable {
 
     @Id
     @SequenceGenerator(
@@ -18,7 +19,6 @@ public class UserRole {
     )
     private Long id;
     private Long user_id;
-
     private Long appRoleId;
 
     public Long getAppRoleId() { return appRoleId; }

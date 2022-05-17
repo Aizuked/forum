@@ -12,17 +12,35 @@
     </div>
     <button type="submit" th:text="#{label.form.submit}"></button>
 </form>
-<span th:if="${not #lists.isEmpty(posts)}">
+<span class="modal_for_hidden_id" th:if="${not #lists.isEmpty(posts)}">
     <div th:each="post: ${posts}">
-        <span th:text="${post.text}"/>
-        <th:block th:each="category: ${post.getCategoriesList()}">
-            categories: <th:block th:text="${category.getCategoryName()}"></th:block>
+        <span id="post.text" th:text="${post.text}" th:value="${post.text}"/>
+        categories:
+        <span id="post.categoriesList" th:each="category: ${post.getCategoriesList()}">
+            <a th:href="@{/posts_of_category/} + ${category.getCategoryName()}" th:class="'post_categories' + ${post.id}" th:text="${category.getCategoryName()}" th:value="${category.getCategoryName()}"></a>
+        </span>
+        <a th:text="${post.getPosterName()}" th:href="@{/posts_of_user/} + ${post.getPosterName()}"></a>
+        <th:block th:if="${#strings.equals(post.getPosterName(), principal)} or ${adminFlag}">
+            <button class="myBtn" th:value="${post.id}" th:text="#{label.modal.editBtn}"></button>
+        </th:block>
+        <th:block th:if="!${#strings.equals(post.getPosterName(), principal)} and !${adminFlag}">
+            <button class="myBtn" th:value="${post.id}" th:text="#{label.modal.editBtn}" disabled></button>
         </th:block>
     </div>
 </span>
 
 <style>
-.modal {
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.myModal {
 display: none;
 position: fixed;
 z-index: 1;
@@ -36,7 +54,7 @@ background-color: rgb(0,0,0);
 background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
+.myModal-content {
 background-color: #fefefe;
 margin: auto;
 padding: 20px;
@@ -58,25 +76,43 @@ text-decoration: none;
 cursor: pointer;
 }
 </style>
-</head>
 
-<button id="myBtn" th:text="#{label.modal.editBtn}"></button>
-
-<div id="myModal" class="modal">
+<div class="myModal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <form th:action="@{/updatePost}" th:object="${post}" method="POST" enctype="application/json">
-            <span th:field="*{username}"></span>
+        <form th:action="@{/updatePost}" method="POST" enctype="application/json">
+            <input type="text" text="" name="text" id="text">
+            <input type="text" text="" name="categories" id="categories">
+            <input type="hidden" id="modal_hidden" name="postId" value="">
+            <input type="submit">
         </form>
     </div>
 </div>
 
-<script>
-var modal = document.getElementById("myModal");
-var btn = document.getElementById("myBtn");
+<script th:inline="javascript">
+var posts = document.getElementsByClassName("modal_for_hidden_id");
+var modal = document.getElementsByClassName("myModal")[0];
+var btns = document.getElementsByClassName("myBtn");
 var span = document.getElementsByClassName("close")[0];
+var temp = 1;
 
-btn.onclick = function() { modal.style.display = "block"; }
+for (let i = 0; i < btns.length; i++) {
+    btns[i].onclick = function () {
+        modal.style.display = "block";
+        var post_id = btns[i].value;
+        if (i != 0) {
+            temp += 1;
+        }
+        var post_text = posts[0].childNodes[temp + i].childNodes[1].innerHTML;
+        var post_categories = "";
+        for (let cat of posts[0].getElementsByClassName("post_categories" + post_id)) {
+            post_categories += cat.innerHTML + " ";
+        }
+        modal.childNodes[1].childNodes[3].childNodes[6].value = post_id;
+        modal.childNodes[1].childNodes[3].childNodes[2].value = post_text;
+        modal.childNodes[1].childNodes[3].childNodes[4].value = post_categories.trim();
+    }
+}
 
 span.onclick = function() { modal.style.display = "none"; }
 
