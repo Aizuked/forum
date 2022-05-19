@@ -1,13 +1,18 @@
-package com.forum.forum.Bot;
+package com.forum.forum.Bot.Subscriber;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+/**
+ * Сервис работы с энтити пользователя User.class, в основном транзакционного доступа к БД.
+ * Зависит от сервиса ролей уровня пользовательского и имплементации Jpa репозитория.
+ * Используется Spring Security -> UserDetailsServiceImpl
+ *              контроллерами   -> AuthenticationController, IndexController, UsersController
+ */
+
 
 @Service
 public class SubscriberService {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.forum.forum.Bot.Subscriber.SubscriberService;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.GroupActor;
@@ -15,20 +16,24 @@ import com.vk.api.sdk.queries.messages.MessagesGetLongPollHistoryQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class Bot implements Runnable {
 
+    int groupId = 213359556;
+    String accessToken = "c41e23e071c1f51b112c60bfac9f5fd216ace88a942fed02ff7d8f1a655900b57b042d6015d3b12df27e2";
     @Autowired
     private final SubscriberService subscriberService;
 
     public Bot(SubscriberService subscriberService) { this.subscriberService = subscriberService; }
 
     public void sendMsg(String postText) {
+
         TransportClient transportClient = new HttpTransportClient();
         VkApiClient vk = new VkApiClient(transportClient);
         Random random = new Random();
         Keyboard keyboard = new Keyboard();
-        GroupActor actor = new GroupActor(213359556, "c41e23e071c1f51b112c60bfac9f5fd216ace88a942fed02ff7d8f1a655900b57b042d6015d3b12df27e2");
+        GroupActor actor = new GroupActor(groupId, accessToken);
         Integer ts = null;
         try {
             ts = vk.messages().getLongPollServer(actor).execute().getTs();
@@ -62,7 +67,7 @@ public class Bot implements Runnable {
         line1.add(new KeyboardButton().setAction(new KeyboardButtonAction().setLabel("Отписаться").setType(TemplateActionTypeNames.TEXT)).setColor(KeyboardButtonColor.POSITIVE));
         allKey.add(line1);
         keyboard.setButtons(allKey);
-        GroupActor actor = new GroupActor(213359556, "c41e23e071c1f51b112c60bfac9f5fd216ace88a942fed02ff7d8f1a655900b57b042d6015d3b12df27e2");
+        GroupActor actor = new GroupActor(groupId, accessToken);
         Integer ts = null;
         try {
             ts = vk.messages().getLongPollServer(actor).execute().getTs();

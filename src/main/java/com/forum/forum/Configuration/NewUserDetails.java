@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
 public class NewUserDetails implements UserDetails {
 
     private User user;
@@ -25,8 +26,6 @@ public class NewUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<Long> userRoleIds = userRoleService.getUserRoleIdsList(user);
-
-
 
         ArrayList<String> userAppRoleNames = appRoleService.getAppRoleNamesByUserRoleIds(userRoleIds);
 

@@ -1,8 +1,6 @@
-package com.forum.forum.User;
+package com.forum.forum.Bot.Subscriber;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 
 /**
  * Jpa репозиторий доступа к PostgreSQL. Используются как наследуемые у JpaRepository<T, ID> методы,
@@ -10,6 +8,5 @@ import java.util.Optional;
  */
 
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findUserByUsername(String username);
+public interface SubscribersRepository extends JpaRepository<Subscriber, Long> {
 }

@@ -3,6 +3,12 @@ package com.forum.forum.Category;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Энтити класс пользователя сайта. Хранится в Postgres, таблица appUsers, поддерживается JPA & Hibernate.
+ *
+ */
+
+
 @Entity
 @Table(name="categories")
 public class Category implements Serializable {

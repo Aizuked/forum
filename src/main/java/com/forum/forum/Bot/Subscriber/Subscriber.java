@@ -1,7 +1,13 @@
-package com.forum.forum.Bot;
+package com.forum.forum.Bot.Subscriber;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
+/**
+ * Энтити класс пользователя сайта. Хранится в Postgres, таблица appUsers, поддерживается JPA & Hibernate.
+ *
+ */
+
 
 @Entity
 @Table(name = "news_subscribers")

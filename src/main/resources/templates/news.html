@@ -5,6 +5,7 @@
 </head>
 <body>
 
+<a th:href="@{/home}" th:text="#{label.href.goHome}"></a>
 <form th:action="@{/addNewPost}" method="POST" enctype="application/json">
     <div>
         <input type="text" th:placeholder="#{label.post.text}" name="text"/>
@@ -12,10 +13,11 @@
     </div>
     <button type="submit" th:text="#{label.form.submit}"></button>
 </form>
+
 <span class="modal_for_hidden_id" th:if="${not #lists.isEmpty(posts)}">
     <div th:each="post: ${posts}">
         <span id="post.text" th:text="${post.text}" th:value="${post.text}"/>
-        categories:
+        <th:block th:text="#{label.post.categoriesListing}"></th:block>
         <span id="post.categoriesList" th:each="category: ${post.getCategoriesList()}">
             <a th:href="@{/posts_of_category/} + ${category.getCategoryName()}" th:class="'post_categories' + ${post.id}" th:text="${category.getCategoryName()}" th:value="${category.getCategoryName()}"></a>
         </span>

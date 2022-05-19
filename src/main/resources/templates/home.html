@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Home</title>
+    <title th:text="#{label.home.title}"></title>
 </head>
 <body>
 <p>Greetings, <span th:text="${principal}"></span>!</p>
@@ -11,5 +11,6 @@
            value="${_csrf.token}"/>
     <input type="submit" th:value="#{label.button.logout}">
 </form>
+<a th:href="@{/home/news}" th:text="#{label.href.goToNews}"></a>
 </body>
 </html>

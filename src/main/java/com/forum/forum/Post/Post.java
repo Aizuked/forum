@@ -1,12 +1,16 @@
 package com.forum.forum.Post;
 
 import com.forum.forum.Category.Category;
-import com.forum.forum.User.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Энтити класс постов пользователей. Хранится в Postgres, таблица posts, поддерживается JPA & Hibernate.
+ */
+
 
 @Entity
 @Table(name="posts")
@@ -21,10 +25,10 @@ public class Post implements Serializable {
             strategy = GenerationType.SEQUENCE,
             generator = "posts_sequence"
     )
-    private Long id;
-    private String text;
-    private ArrayList<Category> categoriesList;
-    private String postername;
+    private Long id;                                //Id записи в базе данных.
+    private String text;                            //Текст поста.
+    private ArrayList<Category> categoriesList;     //Связный список категорий поста.
+    private String postername;                      //Поле username энтити User, написвшего пост. Требуется на фронте.
 
     public Long getId() { return id; }
 

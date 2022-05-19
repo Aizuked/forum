@@ -3,6 +3,12 @@ package com.forum.forum.Configuration.App.UserRole;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * Энтити класс пользователя сайта. Хранится в Postgres, таблица appUsers, поддерживается JPA & Hibernate.
+ *
+ */
+
+
 @Entity
 @Table(name = "userRoles")
 public class UserRole implements Serializable {
