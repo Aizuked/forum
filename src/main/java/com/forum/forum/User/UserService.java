@@ -1,6 +1,7 @@
 package com.forum.forum.User;
 
 import com.forum.forum.Configuration.App.UserRole.UserRoleService;
+import com.forum.forum.Post.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Сервис работы с энтити пользователя User.class, транзакционного доступа к БД.
@@ -61,7 +63,7 @@ public class UserService {
 
         } else {
             throw new IllegalStateException(
-                    "Username:" + user.getUsername() + " already exists!"
+                    "\nUsername:" + user.getUsername() + " already exists!"
             );
         }
     }
@@ -74,7 +76,7 @@ public class UserService {
     public User findUserByUsername(String username) {
         User user = userRepository.findUserByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException(
-                        "User with username=" + username + " was not found!"
+                        "\nUser with username=" + username + " was not found!"
                 ));
         return user;
     }
@@ -87,7 +89,7 @@ public class UserService {
     public void deleteUser(String username) {
         userRepository.findUserByUsername(username).orElseThrow(() ->
                 new IllegalStateException(
-                        "User with username=" + username + " was not found!"
+                        "\nUser with username=" + username + " was not found!"
                 )
         );
     }
@@ -109,11 +111,40 @@ public class UserService {
                 .filter(userToCheck -> crypter.matches(user.getPassword(), userToCheck.getPassword()))
                 .orElseThrow(() ->
                 new UsernameNotFoundException(
-                        "User:" + user.getUsername() + " was not found!"
+                        "\nUser:" + user.getUsername() + " was not found!"
                 )
         );
 
         return !Objects.isNull(user1);
+    }
+
+    @Transactional
+    public void addPostToUserPosts(Post post, String username) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new IllegalStateException(
+                        "\nFailed to find User with username=" + username
+                ));
+
+        if (user.getPosts() != null) {
+            user.getPosts().add(post);
+        } else {
+            user.setPosts(new ArrayList<>(List.of(post)));
+        }
+
+        userRepository.save(user);
+        userRepository.flush();
+    }
+
+    @Transactional
+    public void deletePostFromUserByUserName(String username, Post post) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new IllegalStateException(
+                        "\nFailed to find User with username=" + username
+                ));
+
+        user.getPosts().removeIf(post1 -> post1 == post);
+
+        userRepository.save(user);
     }
 
 }

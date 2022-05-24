@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 
 
+/**
+ * Контроллер, отвечающий за индексную страницу.
+ * Не несёт практического функционала, тестовый, на удаление.
+ */
+
+
 @Controller
 public class IndexController {
 

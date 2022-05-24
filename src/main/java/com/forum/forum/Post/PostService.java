@@ -3,6 +3,7 @@ package com.forum.forum.Post;
 import com.forum.forum.Bot.Bot;
 import com.forum.forum.Category.Category;
 import com.forum.forum.Category.CategoryService;
+import com.forum.forum.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -32,12 +33,16 @@ public class PostService {
     private final PostPagingRepository postPagingRepository;
 
     @Autowired
+    private final UserService userService;
+
+    @Autowired
     Bot bot;
 
-    public PostService(PostRepository postRepository, CategoryService categoryService, PostPagingRepository postPagingRepository) {
+    public PostService(PostRepository postRepository, CategoryService categoryService, PostPagingRepository postPagingRepository, UserService userService) {
         this.postRepository = postRepository;
         this.categoryService = categoryService;
         this.postPagingRepository = postPagingRepository;
+        this.userService = userService;
     }
 
     /**
@@ -53,11 +58,27 @@ public class PostService {
         post.setCategoriesList(categories);
         post.setPosterName(principal);
 
-        postRepository.save(post);
+        post = postRepository.save(post);
         postRepository.flush();
+
+        userService.addPostToUserPosts(post, principal);
 
         bot.sendMsg("\"" + post.getText() + "\"" +              //Отправка сообщения подписчикам рассылки Вк.
                 " was posted by " + post.getPosterName());
+    }
+
+    @Transactional
+    public void deletePost(Long postId) {
+        Post post = Optional.of(postRepository.getById(postId))
+                .orElseThrow(() -> new IllegalStateException(
+                        "\nFailed to find post with id=" + postId + "to then delete it"
+                ));
+
+        userService.deletePostFromUserByUserName(post.getPosterName(), post);
+
+        postRepository.delete(post);
+        postRepository.flush();
+
     }
 
     /**

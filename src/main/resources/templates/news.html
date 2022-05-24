@@ -23,10 +23,21 @@
         </span>
         <a th:text="${post.getPosterName()}" th:href="@{/posts_of_user/} + ${post.getPosterName()}"></a>
         <th:block th:if="${#strings.equals(post.getPosterName(), principal)} or ${adminFlag}">
-            <button class="myBtn" th:value="${post.id}" th:text="#{label.modal.editBtn}"></button>
+            <button class="myBtn" th:value="${post.getId()}" th:text="#{label.modal.editBtn}" name="postId"></button>
         </th:block>
         <th:block th:if="!${#strings.equals(post.getPosterName(), principal)} and !${adminFlag}">
-            <button class="myBtn" th:value="${post.id}" th:text="#{label.modal.editBtn}" disabled></button>
+            <button class="myBtn" th:value="${post.getId()}" th:text="#{label.modal.editBtn}" name="postId" disabled></button>
+        </th:block>
+        <th:block>
+            <form th:action="@{/deletePost}" method="POST" enctype="application/json">
+                <input type="hidden" name="postId" th:value="${post.getId()}">
+                <th:block th:if="${#strings.equals(post.getPosterName(), principal)} or ${adminFlag}">
+                    <button class="delBtn" th:text="#{label.modal.deleteBtn}"></button>
+                </th:block>
+                <th:block th:if="!${#strings.equals(post.getPosterName(), principal)} and !${adminFlag}">
+                    <button class="delBtn" th:text="#{label.modal.deleteBtn}" disabled></button>
+                </th:block>
+            </form>
         </th:block>
     </div>
 </span>
