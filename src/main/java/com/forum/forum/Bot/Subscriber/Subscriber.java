@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Энтити класс пользователя сайта. Хранится в Postgres, таблица appUsers, поддерживается JPA & Hibernate.
+ * Энтити класс подписчиков рассылки новых постов.
+ * Хранится в PostgreSQL, таблица news_subscribers, поддерживается JPA & Hibernate.
  *
  */
 

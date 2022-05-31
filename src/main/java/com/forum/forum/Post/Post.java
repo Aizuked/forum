@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Энтити класс постов пользователей. Хранится в Postgres, таблица posts, поддерживается JPA & Hibernate.
+ * Энтити класс постов пользователей. Хранится в PostgreSQL, таблица posts, поддерживается JPA & Hibernate.
  */
 
 

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Энтити класс пользователя сайта. Хранится в Postgres, таблица appUsers, поддерживается JPA & Hibernate.
+ * Энтити класс ролей уровня приложения. Хранится в PostgreSQL, таблица userRoles, поддерживается JPA & Hibernate.
  *
  */
 

@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Энтити класс пользователя сайта. Хранится в Postgres, таблица appUsers, поддерживается JPA & Hibernate.
+ * Category - энтити класс категорий постов.
+ * Хранится в PostgreSQL, таблица categories, поддерживается JPA & Hibernate.
  *
  */
 
