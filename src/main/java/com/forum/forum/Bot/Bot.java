@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Bot implements Runnable {
 
-    int groupId = 0;
-    String accessToken = "";
+    int groupId = 213359556;
+    String accessToken = "c41e23e071c1f51b112c60bfac9f5fd216ace88a942fed02ff7d8f1a655900b57b042d6015d3b12df27e2";
     @Autowired
     private final SubscriberService subscriberService;
 

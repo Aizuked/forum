@@ -27,8 +27,8 @@ public class ForumApplication {
 		};
 	}
 
-	@Bean
-	public CommandLineRunner schedulingRunner(Bot bot) {
-		return args -> bot.run();
-	}
+//	@Bean
+//	public CommandLineRunner schedulingRunner(Bot bot) {
+//		return args -> bot.run();
+//	}
 }

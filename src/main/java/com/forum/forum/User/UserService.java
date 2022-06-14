@@ -12,10 +12,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Сервис работы с энтити пользователя User.class, транзакционного доступа к БД.
+ * Сервис работы с сущностью пользователя User.
  * Зависит от сервиса ролей уровня пользовательского и имплементации Jpa репозитория.
  * Используется Spring Security -> UserDetailsServiceImpl
- *              контроллерами   -> AuthenticationController, IndexController, UsersController.
+ * контроллерами   -> AuthenticationController, IndexController, UsersController.
  */
 
 
@@ -33,9 +33,10 @@ public class UserService {
     }
 
     /**
-     * Функция добавления новых пользователей.
-     * @userToCheck хранит пользователя, найденного в репозитории по полю username, в случае его существования.
-     * Иначе добавляет полученого функцией пользователя в БД.
+     * Метод добавления новых пользователей.
+     *
+     * @param user хранит пользователя, найденного в репозитории по полю username, в случае его существования.
+     *             Иначе добавляет полученого функцией пользователя в БД.
      */
     @Transactional
     public void addUser(User user) {
@@ -43,22 +44,21 @@ public class UserService {
 
         if (userToCheck.isEmpty()) {
             if (Objects.equals(user.getUsername(), "zxc")) {     //Для отладки - помимо пользователей, написавших
-                                                                    //пост, их посты могут редактировать только
-                                                                    //администраторы.
+                //пост, их посты могут редактировать только
+                //администраторы.
                 user.setUserRoleIds                                 //Наделяет данного пользователя авторитетами
                         (new ArrayList<Long>(List.of(1L, 2L)));     //пользователя и администратора.
                 userRoleService.addUserAppRoleRelation              //Создаёт записи сочетаний id пользователя
                         (user.getId(), new ArrayList<Long>(List.of(1L, 2L)));   //и id его ролей уровня приложения.
-            }
-            else {                                                  //Аналогично
+            } else {                                                  //Аналогично
                 user.setUserRoleIds
                         (new ArrayList<Long>(List.of(1L)));
                 userRoleService.addUserAppRoleRelation
                         (user.getId(), new ArrayList<Long>(List.of(1L)));
             }
 
-            userRepository.save(user);                              //Сохранение в БД.
-            userRepository.flush();                                 //Отправляет накопленные изменения в БД.
+            userRepository.save(user);
+            userRepository.flush();
 
 
         } else {
@@ -110,10 +110,10 @@ public class UserService {
         User user1 = userRepository.findUserByUsername(user.getUsername())
                 .filter(userToCheck -> crypter.matches(user.getPassword(), userToCheck.getPassword()))
                 .orElseThrow(() ->
-                new UsernameNotFoundException(
-                        "\nUser:" + user.getUsername() + " was not found!"
-                )
-        );
+                        new UsernameNotFoundException(
+                                "\nUser:" + user.getUsername() + " was not found!"
+                        )
+                );
 
         return !Objects.isNull(user1);
     }
